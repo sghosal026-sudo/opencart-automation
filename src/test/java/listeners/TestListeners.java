@@ -14,25 +14,25 @@ import utilities.RunManager;
 import utilities.ScreenshotUtil;
 
 public class TestListeners implements ITestListener {
-    
+
     ExtentReports reports;
     ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
-    
+
     @Override
     public void onStart(ITestContext context) {
         String testRunFolderName = context.getCurrentXmlTest().getName();
         RunManager.setTestName(testRunFolderName);
         reports = ExtentReporter.getInstance();
     }
-    
+
     @Override
     public void onTestStart(ITestResult result) {
         String testName = getTestCaseName(result);
-        
+
         ExtentTest test = reports.createTest(testName);
         extentTest.set(test);
     }
-    
+
     @Override
     public void onTestSuccess(ITestResult result) {
         extentTest.get().log(Status.PASS, "Test Passed");
@@ -41,36 +41,37 @@ public class TestListeners implements ITestListener {
                 MediaEntityBuilder.createScreenCaptureFromPath(getScreenshotPath(result)).build()
         );
     }
-    
+
     @Override
     public void onTestFailure(ITestResult result) {
-        
+
         extentTest.get().fail(result.getThrowable());
-        
+
         extentTest.get().fail(
                 "Screenshot",
                 MediaEntityBuilder.createScreenCaptureFromPath(getScreenshotPath(result)).build()
         );
     }
-    
+
     @Override
     public void onFinish(ITestContext context) {
+        FrameworkConstants.TEST_CASE_ID.remove();
         reports.flush();
     }
-    
+
     @Override
     public void onTestSkipped(ITestResult result) {
         extentTest.get().skip(result.getThrowable());
     }
-    
+
     private String getTestCaseName(ITestResult result) {
         if (FrameworkConstants.TEST_CASE_ID.get() != null) {
             return FrameworkConstants.TEST_CASE_ID.get() + "__" + result.getMethod().getMethodName();
         }
-        
+
         return result.getMethod().getMethodName();
     }
-    
+
     public String getScreenshotPath(ITestResult result) {
         String path = "";
         try {
@@ -80,12 +81,12 @@ public class TestListeners implements ITestListener {
                             .getSuperclass()
                             .getDeclaredField("driver")
                             .get(result.getInstance());
-            
+
             path = ScreenshotUtil.captureScreenshot(driver, getTestCaseName(result));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return path;
     }
 }

@@ -14,22 +14,26 @@ public class BaseTest {
     public WebDriver driver;
     public LandingPage landingPage;
     public SoftAssert softAssert;
-    
+
     @BeforeMethod(alwaysRun = true)
     public void setUp(Method method) {
         DriverFactory.init();
-        driver = DriverFactory.getDriver();
-        
-        driver.get(ConfigReader.getProperty("URL"));
-        driver.manage().window().maximize();
-        
-        landingPage = new LandingPage(driver);
-        
-        softAssert = new SoftAssert();
+
+        WebDriver localDriver = DriverFactory.getDriver();
+        localDriver.get(ConfigReader.getProperty("URL"));
+        localDriver.manage().window().maximize();
+
+        TestContext context = new TestContext(localDriver);
+        ContextManager.setContext(context);
+
+        driver = context.getDriver();
+        softAssert = context.getSoftAssert();
+        landingPage = context.getLandingPage();
     }
-    
+
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
-        DriverFactory.quit();
+        ContextManager.getContext().getDriver().quit();
+        ContextManager.unload();
     }
 }
