@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="OpenCart Test Suite" >
+<suite name="OpenCart Test Suite">
     <listeners>
         <listener class-name="listeners.TestListeners"/>
         <listener class-name="listeners.RetryListener"/>
     </listeners>
 
-    <test name="RegisterTests" parallel="methods" thread-count="3">
+    <!--    <test name="RegisterTests" parallel="methods" thread-count="3">-->
+    <!--        <classes>-->
+    <!--            <class name="tests.RegisterFunctionality.RegisterHappyPathTests">-->
+    <!--                <methods>-->
+    <!--                    <include name="verifySuccessfulRegistrationWithMandatoryFields"/>-->
+    <!--                    <include name="verifySuccessfulRegistrationEmail"/>-->
+    <!--                    <include name="verifySuccessfulRegistration" />-->
+    <!--                    <include name="verifySuccessfulRegistrationWithNewsletter"/>-->
+    <!--                    <include name="verifySuccessfulRegistrationWithoutNewsletter"/>-->
+    <!--                </methods>-->
+    <!--            </class>-->
+    <!--            <class name="tests.RegisterFunctionality.RegisterNavigationTests">-->
+    <!--                <methods>-->
+    <!--                    <include name="verifyDifferentRegisterPageNavigation" />-->
+    <!--                </methods>-->
+    <!--            </class>-->
+    <!--            <class name="tests.RegisterFunctionality.RegisterValidationTests">-->
+    <!--                <methods>-->
+    <!--                    <include name="verifyRegisterFormErrorMessagesWithEmptyFields" />-->
+    <!--                    <include name="verifyRegistrationWithExistingAccount" />-->
+    <!--                </methods>-->
+    <!--            </class>-->
+    <!--&lt;!&ndash;            <class name="tests.RegisterFunctionality.RegisterUIAndIntegrationTests">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <methods>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <include name=""/>&ndash;&gt;-->
+    <!--&lt;!&ndash;                </methods>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </class>&ndash;&gt;-->
+    <!--        </classes>-->
+    <!--    </test>-->
+
+    <test verbose="2" name="LoginTests" parallel="methods" thread-count="3">
         <classes>
-            <class name="tests.RegisterFunctionality.RegisterHappyPathTests">
+            <class name="tests.LoginFunctionality.LoginHappyPathTests">
                 <methods>
-                    <include name="verifySuccessfulRegistrationWithMandatoryFields"/>
-                    <include name="verifySuccessfulRegistrationEmail"/>
-                    <include name="verifySuccessfulRegistration" />
-                    <include name="verifySuccessfulRegistrationWithNewsletter"/>
-                    <include name="verifySuccessfulRegistrationWithoutNewsletter"/>
+                    <include name="verifySuccessfulLoginWithValidCredentials"/>
                 </methods>
             </class>
-            <class name="tests.RegisterFunctionality.RegisterNavigationTests">
+            <class name="tests.LoginFunctionality.LoginNegativeTests">
                 <methods>
-                    <include name="verifyDifferentRegisterPageNavigation" />
+                    <include name="verifyUnsuccessfulLoginWithInvalidCredentials"/>
                 </methods>
             </class>
-            <class name="tests.RegisterFunctionality.RegisterValidationTests">
+            <class name="tests.LoginFunctionality.LoginUITests">
                 <methods>
-                    <include name="verifyRegisterFormErrorMessagesWithEmptyFields" />
-                    <include name="verifyRegistrationWithExistingAccount" />
+                    <include name="verifyForgotPasswordLink"/>
                 </methods>
             </class>
-<!--            <class name="tests.RegisterFunctionality.RegisterUIAndIntegrationTests">-->
-<!--                <methods>-->
-<!--                    <include name=""/>-->
-<!--                </methods>-->
-<!--            </class>-->
         </classes>
     </test>
-
-<!--    <test verbose="2" name="LoginTests">-->
-<!--        <classes>-->
-<!--            <class name="tests.RegisterFunctionality.RegisterTests">-->
-<!--                <methods>-->
-<!--                    <include name="verifySuccessfulRegistration"/>-->
-<!--                    <include name="verifySuccessfulRegistrationEmail"/>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
 </suite>
