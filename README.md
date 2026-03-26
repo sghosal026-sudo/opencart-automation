@@ -65,7 +65,6 @@ Services such as `RegisterService` keep tests focused on intent instead of low-l
 - Extent Reports generate an HTML execution report
 - Screenshots are captured for passed and failed tests
 - Run folders are timestamped for traceability
-- Custom test case IDs are included in reporting
 
 ### 5. Parallel-Ready Design
 

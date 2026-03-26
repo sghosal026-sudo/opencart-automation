@@ -13,5 +13,6 @@ public class FrameworkConstants {
     public static final String REGISTER_EXISTING_ACCOUNT_ERROR_MSG = "Warning: E-Mail Address is already registered!";
     //Login Page
     public static final String LOGIN_WARNING_MSG = "Warning: No match for E-Mail Address and/or Password.";
-    public static ThreadLocal<String> TEST_CASE_ID = new ThreadLocal<>();
+    //SearchPage
+    public static final String NO_PRODUCTS_MSG = "There is no product that matches the search criteria.";
 }

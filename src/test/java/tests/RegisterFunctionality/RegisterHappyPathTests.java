@@ -4,103 +4,90 @@ import constants.FrameworkConstants;
 import core.BaseTest;
 import factory.UserFactory;
 import models.User;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.AccountPage;
 import pages.AccountSuccessPage;
 import pages.NewsletterSubscriptionPage;
 import pages.RegisterPage;
 import services.RegisterService;
-import utilities.TestCaseID;
-
-import java.lang.reflect.Method;
 
 public class RegisterHappyPathTests extends BaseTest {
-    RegisterPage registerPage;
-    RegisterService registerService;
-
-    @BeforeMethod
-    public void init(Method method) {
-        if (method.isAnnotationPresent(TestCaseID.class)) {
-            TestCaseID tc = method.getAnnotation(TestCaseID.class);
-            FrameworkConstants.TEST_CASE_ID.set(tc.value());
-        }
-
-        registerPage = landingPage.navigateToRegisterPage();
-        registerService = new RegisterService(registerPage);
-    }
 
     @Test
-    @TestCaseID("TC_RF_001")
     public void verifySuccessfulRegistrationWithMandatoryFields() {
+        RegisterPage registerPage = landingPage().navigateToRegisterPage();
+        RegisterService registerService = new RegisterService(registerPage);
         User user = UserFactory.createUserWithoutNewsletter();
         AccountSuccessPage accountSuccessPage = registerService.registerNewUser(user);
 
-        softAssert.assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
-        softAssert.assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
+        softAssert().assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
+        softAssert().assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
 
-        softAssert.assertAll();
+        softAssert().assertAll();
     }
 
     @Test
-    @TestCaseID("TC_RF_002")
     public void verifySuccessfulRegistrationEmail() {
+        RegisterPage registerPage = landingPage().navigateToRegisterPage();
+        RegisterService registerService = new RegisterService(registerPage);
         User user = UserFactory.createRandomUser();
         AccountSuccessPage accountSuccessPage = registerService.registerNewUser(user);
 
-        softAssert.assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
-        softAssert.assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
+        softAssert().assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
+        softAssert().assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
+        softAssert().assertTrue(true, "Email service not available");
 
-        softAssert.assertTrue(true, "Email service not available");
-
-        softAssert.assertAll();
+        softAssert().assertAll();
     }
 
     @Test
-    @TestCaseID("TC_RF_003")
     public void verifySuccessfulRegistration() {
+        RegisterPage registerPage = landingPage().navigateToRegisterPage();
+        RegisterService registerService = new RegisterService(registerPage);
         User user = UserFactory.createRandomUser();
         AccountSuccessPage accountSuccessPage = registerService.registerNewUser(user);
 
-        softAssert.assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
-        softAssert.assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
+        softAssert().assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
+        softAssert().assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
 
-        softAssert.assertAll();
+        softAssert().assertAll();
     }
 
     @Test
-    @TestCaseID("TC_RF_005")
     public void verifySuccessfulRegistrationWithNewsletter() {
+        RegisterPage registerPage = landingPage().navigateToRegisterPage();
+        RegisterService registerService = new RegisterService(registerPage);
         User user = UserFactory.createUserWithNewsletter();
-
         AccountSuccessPage accountSuccessPage = registerService.registerNewUser(user);
-        softAssert.assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
-        softAssert.assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
+
+        softAssert().assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
+        softAssert().assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
 
         AccountPage accountPage = accountSuccessPage.clickContinue();
-        softAssert.assertTrue(accountPage.isAccountPage(), "User was not redirected to the Account Page.");
+        softAssert().assertTrue(accountPage.isAccountPage(), "User was not redirected to the Account Page.");
 
         NewsletterSubscriptionPage newsletterSubscriptionPage = accountPage.clickOnNewsletterOption();
-        softAssert.assertTrue(newsletterSubscriptionPage.isSubscribed(), "Subscription is incorrect");
+        softAssert().assertTrue(newsletterSubscriptionPage.isSubscribed(), "Subscription is incorrect");
 
-        softAssert.assertAll();
+        softAssert().assertAll();
     }
 
     @Test
-    @TestCaseID("TC_RF_006")
     public void verifySuccessfulRegistrationWithoutNewsletter() {
+        RegisterPage registerPage = landingPage().navigateToRegisterPage();
+        RegisterService registerService = new RegisterService(registerPage);
         User user = UserFactory.createUserWithoutNewsletter();
-
         AccountSuccessPage accountSuccessPage = registerService.registerNewUser(user);
-        softAssert.assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
-        softAssert.assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
+
+        softAssert().assertTrue(accountSuccessPage.isAccountSuccessPage(), "User was not redirected to the Account Success page after registration.");
+        softAssert().assertEquals(accountSuccessPage.getSuccessMessage(), FrameworkConstants.ACCOUNT_SUCCESS_MESSAGE, "Registration failed or success message mismatch.");
 
         AccountPage accountPage = accountSuccessPage.clickContinue();
-        softAssert.assertTrue(accountPage.isAccountPage(), "User was not redirected to the Account Page.");
+        softAssert().assertTrue(accountPage.isAccountPage(), "User was not redirected to the Account Page.");
 
         NewsletterSubscriptionPage newsletterSubscriptionPage = accountPage.clickOnNewsletterOption();
-        softAssert.assertFalse(newsletterSubscriptionPage.isSubscribed(), "Subscription is incorrect");
+        softAssert().assertFalse(newsletterSubscriptionPage.isSubscribed(), "Subscription is incorrect");
 
-        softAssert.assertAll();
+        softAssert().assertAll();
     }
 }

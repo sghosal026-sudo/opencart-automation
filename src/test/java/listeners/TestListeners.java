@@ -4,7 +4,8 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
-import constants.FrameworkConstants;
+import core.ContextManager;
+import core.TestContext;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -44,7 +45,6 @@ public class TestListeners implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
-
         extentTest.get().fail(result.getThrowable());
 
         extentTest.get().fail(
@@ -55,7 +55,6 @@ public class TestListeners implements ITestListener {
 
     @Override
     public void onFinish(ITestContext context) {
-        FrameworkConstants.TEST_CASE_ID.remove();
         reports.flush();
     }
 
@@ -65,8 +64,9 @@ public class TestListeners implements ITestListener {
     }
 
     private String getTestCaseName(ITestResult result) {
-        if (FrameworkConstants.TEST_CASE_ID.get() != null) {
-            return FrameworkConstants.TEST_CASE_ID.get() + "__" + result.getMethod().getMethodName();
+        String description = result.getMethod().getDescription();
+        if (description != null && !description.isEmpty()) {
+            return description;
         }
 
         return result.getMethod().getMethodName();
@@ -75,13 +75,12 @@ public class TestListeners implements ITestListener {
     public String getScreenshotPath(ITestResult result) {
         String path = "";
         try {
-            WebDriver driver = (WebDriver)
-                    result.getTestClass()
-                            .getRealClass()
-                            .getSuperclass()
-                            .getDeclaredField("driver")
-                            .get(result.getInstance());
+            TestContext context = ContextManager.getContext();
+            if (context == null) {
+                return path;
+            }
 
+            WebDriver driver = context.getDriver();
             path = ScreenshotUtil.captureScreenshot(driver, getTestCaseName(result));
         } catch (Exception e) {
             e.printStackTrace();

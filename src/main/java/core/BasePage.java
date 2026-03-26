@@ -24,46 +24,35 @@ public class BasePage {
     }
 
     protected void click(By locator) {
-        retry(() -> {
+        withStaleElementRetry(() -> {
             wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
             WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
             element.click();
+            return null;
         });
     }
 
     protected void sendKeys(By locator, String text) {
-        retry(() -> {
+        withStaleElementRetry(() -> {
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
             element.clear();
             element.sendKeys(text);
+            return null;
         });
     }
 
     protected String getText(By locator) {
-        return retryWithReturn(() -> {
+        return withStaleElementRetry(() -> {
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
             return element.getText();
         });
     }
 
     protected boolean isSelected(By locator) {
-        return retryWithReturn(() -> getElement(locator).isSelected());
+        return withStaleElementRetry(() -> getElement(locator).isSelected());
     }
 
-    private void retry(Runnable action) {
-        int attempts = 0;
-        while (attempts < 3) {
-            try {
-                action.run();
-                return;
-            } catch (StaleElementReferenceException e) {
-                attempts++;
-            }
-        }
-        throw new RuntimeException("Element remained stale after retries");
-    }
-
-    private <T> T retryWithReturn(SupplierWithException<T> action) {
+    private <T> T withStaleElementRetry(SupplierWithException<T> action) {
         int attempts = 0;
         while (attempts < 3) {
             try {
